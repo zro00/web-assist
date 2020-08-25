@@ -8,7 +8,7 @@ const confidenceLevel = 0.4;
 let textData;
 
 var directLine = new DirectLine({
-  secret: Dy9BD2YTX40.OapVPFr8Yrs4yfoca3ZmlqudQ6z5Pcy3QbSOfaDbtYU /* put your Direct Line secret here */,
+  secret: "Dy9BD2YTX40.OapVPFr8Yrs4yfoca3ZmlqudQ6z5Pcy3QbSOfaDbtYU" /* put your Direct Line secret here */,
   //token: /* or put your Direct Line token here (supply secret OR token, not both) */,
   //domain: /* optional: if you are not using the default Direct Line endpoint, e.g. if you are using a region-specific endpoint, put its full URL here */
   webSocket: true /* optional: false if you want to use polling GET to receive messages. Defaults to true (use WebSocket). */,

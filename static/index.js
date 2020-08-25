@@ -1,4 +1,7 @@
-import createPonyfill from 'web-speech-cognitive-services/lib/SpeechServices';
+//text to speech import
+//import createPonyfill from 'web-speech-cognitive-services/lib/SpeechServices';
+
+import createPonyfill from 'web-speech-cognitive-services/lib/SpeechServices/SpeechToText';
 
 async function test(){
   const ponyfill = createPonyfill({
@@ -10,7 +13,8 @@ async function test(){
   });
 
 //speech to text
-const recognition = new SpeechRecognition();
+const recognition = ponyfill;
+//const recognition = new SpeechRecognition();
 
 let but = document.getElementById("audio");
 but.addEventListener("click", () => {

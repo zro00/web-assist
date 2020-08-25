@@ -8,6 +8,24 @@ async function test(){
       region: 'eastus'
     }
   });
+
+//speech to text
+const recognition = new SpeechRecognition();
+
+let but = document.getElementById("audio");
+but.addEventListener("click", () => {
+
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+
+  recognition.onresult = ({ results }) => {
+    console.log(results);
+  };
+
+  recognition.start();
+});
+  //text to speech
+  /*
   const { speechSynthesis, SpeechSynthesisUtterance } = ponyfill;
   let but = document.getElementById("audio");
   but.addEventListener("click", () => {
@@ -17,7 +35,8 @@ async function test(){
     utterance.voice = voices.find(voice => /JessaRUS/u.test(voice.name));
 
     speechSynthesis.speak(utterance);
-  });
+  });*/
+
   /*speechSynthesis.addEventListener('voiceschanged', () => {
     const voices = speechSynthesis.getVoices();
     const utterance = new SpeechSynthesisUtterance('Hello, World!');

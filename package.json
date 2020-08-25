@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "parcel index.html"
+    "dev": "parcel serve index.html --https --cert cert/cert.pem --key cert/key.pem"
   },
   "author": "",
   "license": "ISC",

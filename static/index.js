@@ -1,7 +1,39 @@
+import { createSpeechRecognitionPonyfill } from 'web-speech-cognitive-services/lib/SpeechServices/SpeechToText';
+
+const {
+  SpeechRecognition
+} = await createSpeechRecognitionPonyfill({
+  credentials: {
+    region: 'eastus',
+    subscriptionKey: '1ec57e11112e441aa47679171ec3e3af'
+  }
+});
+
+const recognition = new SpeechRecognition();
+
+
+
+let but = document.getElementById("audio");
+but.addEventListener("click", () => {
+
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+
+  recognition.onresult = ({ results }) => {
+    console.log(results);
+  };
+
+  recognition.start();
+
+});
+
+
+
+
 //text to speech import
 //import createPonyfill from 'web-speech-cognitive-services/lib/SpeechServices';
 
-import createPonyfill from 'web-speech-cognitive-services/lib/SpeechServices/SpeechToText';
+/*import createPonyfill from 'web-speech-cognitive-services/lib/SpeechServices/SpeechToText';
 
 async function test(){
   const ponyfill = createPonyfill({
@@ -27,7 +59,7 @@ but.addEventListener("click", () => {
   };
 
   recognition.start();
-});
+});*/
   //text to speech
   /*
   const { speechSynthesis, SpeechSynthesisUtterance } = ponyfill;
@@ -49,6 +81,6 @@ but.addEventListener("click", () => {
 
     speechSynthesis.speak(utterance);
   });*/
-}
+//}
 
 test();

@@ -1,7 +1,23 @@
 import createPonyfill from "web-speech-cognitive-services/lib/SpeechServices";
+import { DirectLine } from 'botframework-directlinejs';
+// For Node.js:
+// const { DirectLine } = require('botframework-directlinejs');
+
 
 const confidenceLevel = 0.4;
 let textData;
+
+var directLine = new DirectLine({
+  secret: Dy9BD2YTX40.OapVPFr8Yrs4yfoca3ZmlqudQ6z5Pcy3QbSOfaDbtYU /* put your Direct Line secret here */,
+  //token: /* or put your Direct Line token here (supply secret OR token, not both) */,
+  //domain: /* optional: if you are not using the default Direct Line endpoint, e.g. if you are using a region-specific endpoint, put its full URL here */
+  webSocket: true /* optional: false if you want to use polling GET to receive messages. Defaults to true (use WebSocket). */,
+  //pollingInterval: /* optional: set polling interval in milliseconds. Defaults to 1000 */,
+  //timeout: /* optional: a timeout in milliseconds for requests to the bot. Defaults to 20000 */,
+  conversationStartProperties: { /* optional: properties to send to the bot on conversation start */
+      locale: 'en-US'
+  }
+});
 
 function test() {
   /*const authToken = {
@@ -42,6 +58,18 @@ function test() {
       if (isFinalCheck && speechData.confidence > confidenceLevel) {
         textData = speechData.transcript;
         console.log(textData);
+        directLine.postActivity({
+          from: { id: 'john00', name: 'john' }, // required (from.name is optional)
+          type: 'message',
+          text: textData
+      }).subscribe(
+          id => console.log("Posted activity, assigned ID ", id),
+          error => console.log("Error posting activity", error)
+      );
+      directLine.activity$
+      .subscribe(
+      activity => console.log("received activity ", activity)
+      );
       } else {
         textData = "Sorry could you repeat that agiain!";
         console.log("error");

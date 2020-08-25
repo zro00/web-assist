@@ -3,7 +3,7 @@ import createPonyfill from 'web-speech-cognitive-services/lib/SpeechServices';
 
 //import createPonyfill from 'web-speech-cognitive-services/lib/SpeechServices/SpeechToText';
 
-async function test(){
+function test(){
   const ponyfill = createPonyfill({
     credentials: {
       subscriptionKey: '1ec57e11112e441aa47679171ec3e3af',
@@ -13,19 +13,18 @@ async function test(){
   });
 
 //speech to text
-const recognition = ponyfill;
+const SpeechRecognition = ponyfill;
 //const recognition = new SpeechRecognition();
 
-let but = document.getElementById("audio");
-but.addEventListener("click", () => {
-
+let lis = document.getElementById("listen");
+lis.addEventListener("click", () => {
+    const recognition = new SpeechRecognition();
     recognition.interimResults = true;
     recognition.lang = 'en-US';
 
     recognition.onresult = ({ results }) => {
       console.log(results);
     };
-
     recognition.start();
   });
   //text to speech

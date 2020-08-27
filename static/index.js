@@ -72,7 +72,7 @@ function test() {
     .subscribe(
         message => {
           console.log("received message ", message);
-          console.log(activity.text);
+          console.log(message[0]);
           let voices = speechSynthesis.getVoices();
           let utterance = new SpeechSynthesisUtterance(message);
           utterance.voice = voices.find((voice) => /JessaRUS/u.test(voice.name));

@@ -4,10 +4,10 @@ import { DirectLine } from 'botframework-directlinejs';
 // const { DirectLine } = require('botframework-directlinejs');
 
 
-const confidenceLevel = 0.4;
-let textData;
 
-var directLine = new DirectLine({
+let textData;
+const confidenceLevel = 0.4;
+const directLine = new DirectLine({
   secret: "qOk-KiMu8IU.M4SODPphbB_HY8EmgS65hrPJ4VBSQTb1FxN5x3nCqV0" /* put your Direct Line secret here */,
   //token: /* or put your Direct Line token here (supply secret OR token, not both) */,
   //domain: /* optional: if you are not using the default Direct Line endpoint, e.g. if you are using a region-specific endpoint, put its full URL here */
@@ -59,24 +59,25 @@ function test() {
         textData = speechData.transcript;
         console.log(textData);
         directLine.postActivity({
-          from: { id: 'john00', name: 'john' }, // required (from.name is optional)
+          from: { id: 'client', name: 'client' }, // required (from.name is optional)
           type: 'message',
           text: textData
       }).subscribe(
           id => console.log("Posted activity, assigned ID ", id),
           error => console.log("Error posting activity", error)
       );
-      directLine.activity$
-      .subscribe(
-      activity => console.log("received activity ", activity)
-      );
-      let voices = speechSynthesis.getVoices();
-      let utterance = new SpeechSynthesisUtterance(activity.text);
-  
-      utterance.voice = voices.find((voice) => /JessaRUS/u.test(voice.name));
-  
-      speechSynthesis.speak(utterance);
 
+      directLine.activity$
+    .filter(activity => activity.type === 'message' && activity.from.id === 'vap-echo')
+    .subscribe(
+        message => {
+          console.log("received message ", message);
+          let voices = speechSynthesis.getVoices();
+          let utterance = new SpeechSynthesisUtterance(message);
+          utterance.voice = voices.find((voice) => /JessaRUS/u.test(voice.name));
+          speechSynthesis.speak(utterance);
+        }
+    );
       } else {
         textData = "Sorry could you repeat that agiain!";
         let voices = speechSynthesis.getVoices();

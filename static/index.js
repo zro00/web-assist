@@ -61,7 +61,7 @@ function test() {
         directLine.postActivity({
           from: { id: 'john00', name: 'john' }, // required (from.name is optional)
           type: 'message',
-          text: 'hey'
+          text: textData
       }).subscribe(
           id => console.log("Posted activity, assigned ID ", id),
           error => console.log("Error posting activity", error)
@@ -70,8 +70,21 @@ function test() {
       .subscribe(
       activity => console.log("received activity ", activity)
       );
+      let voices = speechSynthesis.getVoices();
+      let utterance = new SpeechSynthesisUtterance(activity.text);
+  
+      utterance.voice = voices.find((voice) => /JessaRUS/u.test(voice.name));
+  
+      speechSynthesis.speak(utterance);
+
       } else {
         textData = "Sorry could you repeat that agiain!";
+        let voices = speechSynthesis.getVoices();
+        let utterance = new SpeechSynthesisUtterance(textData);
+    
+        utterance.voice = voices.find((voice) => /JessaRUS/u.test(voice.name));
+    
+        speechSynthesis.speak(utterance);
         console.log("error");
       }
       /*for (item in results) {
@@ -85,7 +98,7 @@ function test() {
     recognition.start();
   });
 
-  let but = document.getElementById("audio");
+  /*let but = document.getElementById("audio");
   but.addEventListener("click", () => {
     const voices = speechSynthesis.getVoices();
     const utterance = new SpeechSynthesisUtterance("hello");

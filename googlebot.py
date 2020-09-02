@@ -57,7 +57,7 @@ def detect_intent_with_texttospeech_response(project_id, session_id, texts,
             print('Audio content written to file "output.wav"')
 
 
-@app.websocket_route('/ws')
+@app.websocket_route('/wss')
 async def websocket_endpoint(websocket):
     await websocket.accept()
     # Process incoming messages
@@ -69,6 +69,7 @@ async def websocket_endpoint(websocket):
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+    #uvicorn.run("example:app", host="127.0.0.1", port=5000, log_level="info")
+    uvicorn.run(app, host='0.0.0.0', port=8000, ssl-certfile="cert/cert.pem",ssl-keyfile="cert/key.pem")
 
 

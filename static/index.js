@@ -1,13 +1,16 @@
 import createPonyfill from "web-speech-cognitive-services/lib/SpeechServices";
 
 if ("WebSocket" in window) {
+    let list = document.getElementById("listen");
+    list.disabled = true;
     //alert("WebSocket is supported by your Browser!");
     
     // Let us open a web socket
     var ws = new WebSocket("wss://34.122.187.227:8000/voice");
     ws.onopen = function() {
       console.log("CONNECTED")
-      let list = document.getElementById("listen");
+      //let list = document.getElementById("listen");
+      list.disabled = false
       list.addEventListener("click", () => {
       speech_to_text();
   });  

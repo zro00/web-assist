@@ -75,6 +75,7 @@ async def websocket_endpoint(websocket: WebSocket):
     # Process incoming messages
     while True:
         mesg = await websocket.receive_text()
+        print(f"THE MESSAGE WAS {mesg}")
         audio = detect_intent_with_texttospeech_response(project_id,session_id, mesg, language_code)
         await websocket.send_text(mesg.replace("Client", "Server"))
     await websocket.close()

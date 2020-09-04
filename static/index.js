@@ -1,14 +1,14 @@
 import createPonyfill from "web-speech-cognitive-services/lib/SpeechServices";
 
 
-function text_to_speech(msg){
+function text_to_speech(msg, speechSynthesis, SpeechSynthesisUtterance){
   let voices = speechSynthesis.getVoices();
   let utterance = new SpeechSynthesisUtterance(msg);
   utterance.voice = voices.find((voice) => /JessaRUS/u.test(voice.name));
   speechSynthesis.speak(utterance);
 }
 
-function speech_to_text() {
+function speech_to_text(SpeechRecognition) {
   console.log("getting voice data");
   const recognition = new SpeechRecognition();
 
@@ -31,8 +31,8 @@ function speech_to_text() {
         ws.send(textData);
         console.log("Message is sent...");
       } else {
-        text_data = "Sorry could you repeat that agiain!";
-        text_to_speech(text_data);
+        //text_data = "Sorry could you repeat that agiain!";
+        //text_to_speech(text_data, speechSynthesis, SpeechSynthesisUtterance);
         console.log("error");
       }
       /*for (item in results) {
@@ -77,12 +77,12 @@ if ("WebSocket" in window) {
       //let list = document.getElementById("listen");
       list.disabled = false;
       list.addEventListener("click", () => {
-      speech_to_text();
+      speech_to_text(SpeechRecognition);
   });  
     }
     ws.onmessage = function (evt) { 
       let received_msg = evt.data;
-      text_to_speech(received_msg);
+      text_to_speech(received_msg, speechSynthesis, SpeechSynthesisUtterance);
     };
     
     ws.onclose = function() { 

@@ -9,6 +9,7 @@ function text_to_speech(msg, speechSynthesis, SpeechSynthesisUtterance){
 }
 
 function speech_to_text(SpeechRecognition) {
+  const confidenceLevel = 0.4;
   console.log("getting voice data");
   const recognition = new SpeechRecognition();
 
@@ -45,10 +46,6 @@ function speech_to_text(SpeechRecognition) {
 
     recognition.start();
 }
-
-
-
-
 
 let list = document.getElementById("listen");
 list.disabled = true;

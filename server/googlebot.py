@@ -60,7 +60,7 @@ def detect_intent_with_texttospeech_response(project_id, session_id, texts,
 
 @app.websocket_route('/wss')
 async def websocket_endpoint(websocket):
-    await websocket.accept()(
+    await websocket.accept()
     print(websocket)
     # Process incoming messages
     while True:

@@ -10,6 +10,7 @@ function text_to_speech(msg, speechSynthesis, SpeechSynthesisUtterance){
 
 function speech_to_text(SpeechRecognition) {
   const confidenceLevel = 0.4;
+  let textData;
   console.log("getting voice data");
   const recognition = new SpeechRecognition();
 
@@ -17,11 +18,12 @@ function speech_to_text(SpeechRecognition) {
     recognition.lang = "en-US";
 
     recognition.onresult = ({ results }) => {
-      console.log(results);
+      //console.log(results);
       //let x = results;
       //console.log(typeof results);
 
       let speechData = results[0][0];
+      console.log(speechData);
       let isFinalCheck = results[0].isFinal;
 
       if (isFinalCheck && speechData.confidence > confidenceLevel) {

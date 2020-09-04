@@ -1,19 +1,30 @@
 import createPonyfill from "web-speech-cognitive-services/lib/SpeechServices";
 
-         
 if ("WebSocket" in window) {
     //alert("WebSocket is supported by your Browser!");
     
     // Let us open a web socket
     var ws = new WebSocket("wss://34.122.187.227:8000/voice");
     ws.onopen = function() {
-      test();
-
+      console.log("CONNECTED")
+      let list = document.getElementById("listen");
+      list.addEventListener("click", () => {
+      speech_to_text();
+  });  
     }
-} else {
-  
+    ws.onmessage = function (evt) { 
+      let received_msg = evt.data;
+      text_to_speech(eceived_msg)
+    };
+    
+    ws.onclose = function() { 
+      // websocket is closed.
+      console.log ("WEBSOCKET CONNETCTION CLOSING"); 
+      };
+  }
+else {
     // The browser doesn't support WebSocket
-    //alert("WebSocket NOT supported by your Browser!");
+    alert("WebSocket NOT supported by your Browser!");
 }
 //import { DirectLine } from 'botframework-directlinejs';
 // For Node.js:
@@ -225,12 +236,15 @@ while (true) {
   //}
 //});
 
-function test() {
-  print("running test")
-  /*const authToken = {
-    token:
-      "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJyZWdpb24iOiJlYXN0dXMiLCJzdWJzY3JpcHRpb24taWQiOiI4YzM0MDQzZGEzYWI0NGQ2YmVkMmE0NjBjNjdjZTcwNiIsInByb2R1Y3QtaWQiOiJTcGVlY2hTZXJ2aWNlcy5GMCIsImNvZ25pdGl2ZS1zZXJ2aWNlcy1lbmRwb2ludCI6Imh0dHBzOi8vYXBpLmNvZ25pdGl2ZS5taWNyb3NvZnQuY29tL2ludGVybmFsL3YxLjAvIiwiYXp1cmUtcmVzb3VyY2UtaWQiOiIvc3Vic2NyaXB0aW9ucy8xNTIwMmRhMy05M2FmLTQ2YjEtOWZkYi1hZDU5MmU0MmNmZDcvcmVzb3VyY2VHcm91cHMvd2ViLWFzc2lzdC9wcm92aWRlcnMvTWljcm9zb2Z0LkNvZ25pdGl2ZVNlcnZpY2VzL2FjY291bnRzL3dlYi1hc3Npc3Qtc3BlZWNoLTEiLCJzY29wZSI6InNwZWVjaHNlcnZpY2VzIiwiYXVkIjoidXJuOm1zLnNwZWVjaHNlcnZpY2VzLmVhc3R1cyIsImV4cCI6MTU4OTgyOTg5MiwiaXNzIjoidXJuOm1zLmNvZ25pdGl2ZXNlcnZpY2VzIn0.2emMQ5-OIU26TwiOOyQ-Q2qNYqZrDOZlQh1CzsxQxJw",
-  };*/
+function text_to_speech(msg){
+  let voices = speechSynthesis.getVoices();
+  let utterance = new SpeechSynthesisUtterance(msg);
+  utterance.voice = voices.find((voice) => /JessaRUS/u.test(voice.name));
+  speechSynthesis.speak(utterance);
+  }
+
+function speech_to_text() {
+  console.log("getting voice data");
 
   const ponyfill = createPonyfill({
     credentials: {
@@ -247,9 +261,7 @@ function test() {
     SpeechSynthesisUtterance,
   } = ponyfill;
 
-  let list = document.getElementById("listen");
-  list.addEventListener("click", () => {
-    const recognition = new SpeechRecognition();
+  const recognition = new SpeechRecognition();
 
     //recognition.interimResults = true;
     recognition.lang = "en-US";
@@ -265,54 +277,13 @@ function test() {
       if (isFinalCheck && speechData.confidence > confidenceLevel) {
         textData = speechData.transcript;
         console.log(textData);
-       
-       /* directLine.postActivity({
-          from: { id: 'client', name: 'client' }, // required (from.name is optional)
-          type: 'message',
-          text: textData
-      }).subscribe(
-          id => console.log("Posted activity, assigned ID ", id),
-          error => console.log("Error posting activity", error)
-      );*/
-
-      /*directLine.activity$
-    .filter(activity => activity.type === 'message' && activity.from.id === 'vap-echo')
-    .subscribe(
-        message => {
-          console.log("received message ", message);
-          console.log(message[0]);*/
-
-          //ws.onopen = function() {
         
-            // Web Socket is connected, send data using send()
-          ws.send(textData);
-          console.log("Message is sent...");
-         //};
-    
-         ws.onmessage = function (evt) { 
-            let received_msg = evt.data;
-            console.log(received_msg);
-         };
-    
-         ws.onclose = function() { 
-            
-            // websocket is closed.
-            alert("Connection is closed..."); 
-         };
-          let voices = speechSynthesis.getVoices();
-          let utterance = new SpeechSynthesisUtterance(received_msg);
-          utterance.voice = voices.find((voice) => /JessaRUS/u.test(voice.name));
-          speechSynthesis.speak(utterance);
-        //}
-    //);
+        // Web Socket is connected, send data using send()
+        ws.send(textData);
+        console.log("Message is sent...");
       } else {
-        textData = "Sorry could you repeat that agiain!";
-        let voices = speechSynthesis.getVoices();
-        let utterance = new SpeechSynthesisUtterance(textData);
-    
-        utterance.voice = voices.find((voice) => /JessaRUS/u.test(voice.name));
-    
-        speechSynthesis.speak(utterance);
+        text_data = "Sorry could you repeat that agiain!";
+        text_to_speech(text_data);
         console.log("error");
       }
       /*for (item in results) {
@@ -324,25 +295,4 @@ function test() {
     };
 
     recognition.start();
-  });
-
-  /*let but = document.getElementById("audio");
-  but.addEventListener("click", () => {
-    const voices = speechSynthesis.getVoices();
-    const utterance = new SpeechSynthesisUtterance("hello");
-
-    utterance.voice = voices.find((voice) => /JessaRUS/u.test(voice.name));
-
-    speechSynthesis.speak(utterance);
-  });
-  /*speechSynthesis.addEventListener('voiceschanged', () => {
-    const voices = speechSynthesis.getVoices();
-    const utterance = new SpeechSynthesisUtterance('Hello, World!');
-
-    utterance.voice = voices.find(voice => /JessaRUS/u.test(voice.name));
-
-    speechSynthesis.speak(utterance);
-  });*/
 }
-
-//test();

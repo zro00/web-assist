@@ -16,7 +16,7 @@ import uvicorn
     #Middleware(CORSMiddleware, allow_origins=['*'])
 #]
 
-project_id = "vap-smalltalk-pqhr"
+project_id = "newagent-vwal"
 session_id ="15AA17888"
 language_code = "en_CA"
 

@@ -14,7 +14,7 @@ if ("WebSocket" in window) {
     }
     ws.onmessage = function (evt) { 
       let received_msg = evt.data;
-      text_to_speech(eceived_msg)
+      text_to_speech(received_msg);
     };
     
     ws.onclose = function() { 
@@ -241,7 +241,7 @@ function text_to_speech(msg){
   let utterance = new SpeechSynthesisUtterance(msg);
   utterance.voice = voices.find((voice) => /JessaRUS/u.test(voice.name));
   speechSynthesis.speak(utterance);
-  }
+}
 
 function speech_to_text() {
   console.log("getting voice data");

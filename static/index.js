@@ -1,5 +1,55 @@
 import createPonyfill from "web-speech-cognitive-services/lib/SpeechServices";
 
+
+function text_to_speech(msg){
+  let voices = speechSynthesis.getVoices();
+  let utterance = new SpeechSynthesisUtterance(msg);
+  utterance.voice = voices.find((voice) => /JessaRUS/u.test(voice.name));
+  speechSynthesis.speak(utterance);
+}
+
+function speech_to_text() {
+  console.log("getting voice data");
+  const recognition = new SpeechRecognition();
+
+    //recognition.interimResults = true;
+    recognition.lang = "en-US";
+
+    recognition.onresult = ({ results }) => {
+      console.log(results);
+      //let x = results;
+      //console.log(typeof results);
+
+      let speechData = results[0][0];
+      let isFinalCheck = results[0].isFinal;
+
+      if (isFinalCheck && speechData.confidence > confidenceLevel) {
+        textData = speechData.transcript;
+        console.log(textData);
+        
+        // Web Socket is connected, send data using send()
+        ws.send(textData);
+        console.log("Message is sent...");
+      } else {
+        text_data = "Sorry could you repeat that agiain!";
+        text_to_speech(text_data);
+        console.log("error");
+      }
+      /*for (item in results) {
+        console.log(item);
+      }*/
+      //console.log(results[0].confidence);
+      //console.log(x[0].isfinal);
+      //console.log(results.transcript);
+    };
+
+    recognition.start();
+}
+
+
+
+
+
 let list = document.getElementById("listen");
 list.disabled = true;
 if ("WebSocket" in window) {
@@ -253,48 +303,3 @@ while (true) {
       //locale: 'en-US'
   //}
 //});
-
-function text_to_speech(msg){
-  let voices = speechSynthesis.getVoices();
-  let utterance = new SpeechSynthesisUtterance(msg);
-  utterance.voice = voices.find((voice) => /JessaRUS/u.test(voice.name));
-  speechSynthesis.speak(utterance);
-}
-
-function speech_to_text() {
-  console.log("getting voice data");
-  const recognition = new SpeechRecognition();
-
-    //recognition.interimResults = true;
-    recognition.lang = "en-US";
-
-    recognition.onresult = ({ results }) => {
-      console.log(results);
-      //let x = results;
-      //console.log(typeof results);
-
-      let speechData = results[0][0];
-      let isFinalCheck = results[0].isFinal;
-
-      if (isFinalCheck && speechData.confidence > confidenceLevel) {
-        textData = speechData.transcript;
-        console.log(textData);
-        
-        // Web Socket is connected, send data using send()
-        ws.send(textData);
-        console.log("Message is sent...");
-      } else {
-        text_data = "Sorry could you repeat that agiain!";
-        text_to_speech(text_data);
-        console.log("error");
-      }
-      /*for (item in results) {
-        console.log(item);
-      }*/
-      //console.log(results[0].confidence);
-      //console.log(x[0].isfinal);
-      //console.log(results.transcript);
-    };
-
-    recognition.start();
-}

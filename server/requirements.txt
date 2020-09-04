@@ -3,3 +3,4 @@ fastapi
 uvicorn
 #requests
 #ujson
+dialogflow_v2

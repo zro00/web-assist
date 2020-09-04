@@ -2,15 +2,18 @@ import createPonyfill from "web-speech-cognitive-services/lib/SpeechServices";
 
          
 if ("WebSocket" in window) {
-    alert("WebSocket is supported by your Browser!");
+    //alert("WebSocket is supported by your Browser!");
     
     // Let us open a web socket
     var ws = new WebSocket("wss://34.122.187.227:8000/voice");
-    test();
+    ws.onopen = function() {
+      test();
+
+    }
 } else {
   
     // The browser doesn't support WebSocket
-    alert("WebSocket NOT supported by your Browser!");
+    //alert("WebSocket NOT supported by your Browser!");
 }
 //import { DirectLine } from 'botframework-directlinejs';
 // For Node.js:
@@ -279,12 +282,12 @@ function test() {
           console.log("received message ", message);
           console.log(message[0]);*/
 
-          ws.onopen = function() {
+          //ws.onopen = function() {
         
             // Web Socket is connected, send data using send()
-            ws.send(textData);
-            console.log("Message is sent...");
-         };
+          ws.send(textData);
+          console.log("Message is sent...");
+         //};
     
          ws.onmessage = function (evt) { 
             let received_msg = evt.data;

@@ -5,7 +5,7 @@ if ("WebSocket" in window) {
     alert("WebSocket is supported by your Browser!");
     
     // Let us open a web socket
-    var ws = new WebSocket("ws://34.122.187.227:8000");
+    var ws = new WebSocket("wss://34.122.187.227:8000");
     test();
 } else {
   

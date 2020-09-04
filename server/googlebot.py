@@ -58,7 +58,7 @@ def detect_intent_with_texttospeech_response(project_id, session_id, texts,
             print('Audio content written to file "output.wav"')
 
 
-@app.websocket_route('/wss')
+@app.websocket_route('/ws')
 async def websocket_endpoint(websocket):
     await websocket.accept()
     # Process incoming messages

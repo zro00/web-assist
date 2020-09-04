@@ -1,4 +1,5 @@
-starlette
+#starlette
+fastapi
 uvicorn
-requests
-ujson
+#requests
+#ujson

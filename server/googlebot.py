@@ -1,22 +1,26 @@
-from starlette.websockets import WebSocket
-from starlette.applications import Starlette
+#from starlette.websockets import WebSocket
+#from starlette.applications import Starlette
 import os
+from fastapi import FastAPI, WebSocket
+from fastapi.responses import HTMLResponse
+
+app = FastAPI()
 #from starlette.staticfiles import StaticFiles
 #from starlette.responses import HTMLResponse
 #from starlette.templating import Jinja2Templates
-from starlette.middleware import Middleware
-from starlette.middleware.cors import CORSMiddleware
+#from starlette.middleware import Middleware
+#from starlette.middleware.cors import CORSMiddleware
 import uvicorn
 
-middleware = [
-    Middleware(CORSMiddleware, allow_origins=['*'])
-]
+#middleware = [
+    #Middleware(CORSMiddleware, allow_origins=['*'])
+#]
 
 project_id = "vap-smalltalk-pqhr"
 session_id ="15AA17888"
 language_code = "en_CA"
 
-app = Starlette(debug=True, middleware=middleware)
+#app = Starlette(debug=True, middleware=middleware)
 #app.mount('/static', StaticFiles(directory='statics'), name='static')
 
 #@app.route('/')
@@ -65,7 +69,7 @@ def detect_intent_with_texttospeech_response(project_id, session_id, texts,
 
 
 @app.websocket_route('/wss')
-async def websocket_endpoint(websocket):
+async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     print(websocket)
     # Process incoming messages

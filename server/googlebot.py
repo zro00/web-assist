@@ -16,8 +16,8 @@ import uvicorn
     #Middleware(CORSMiddleware, allow_origins=['*'])
 #]
 
-project_id = "newagent-vwal"
-session_id ="15AA17888"
+project_id = "build-server-280714"
+session_id ="test"
 language_code = "en_CA"
 
 #app = Starlette(debug=True, middleware=middleware)
@@ -29,6 +29,7 @@ language_code = "en_CA"
 
 def detect_intent_with_texttospeech_response(project_id, session_id, texts,
                                              language_code):
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'private_key.json'
     """Returns the result of detect intent with texts as inputs and includes
     the response in an audio format.
 

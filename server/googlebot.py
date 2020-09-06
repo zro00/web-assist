@@ -28,7 +28,7 @@ language_code = "en_CA"
 #async def homepage(request):
     #return HTMLResponse(Template(template).render())
 
-def detect_intent_with_texttospeech_response(project_id, session_id, texts,
+def detect_intent_with_texttospeech_response(project_id, session_id, client_msg,
                                              language_code):
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'private_key.json'
     """Returns the result of detect intent with texts as inputs and includes
@@ -43,11 +43,11 @@ def detect_intent_with_texttospeech_response(project_id, session_id, texts,
     session_path = session_client.session_path(project_id, session_id)
     print('Session path: {}\n'.format(session_path))
 
-    for text in texts:
-        text_input = dialogflow.types.TextInput(
-            text=text, language_code=language_code)
-        print(f"the TEXT INPUT {text_input}")
-        query_input = dialogflow.types.QueryInput(text=text_input)
+    #for text in client_msg:
+    text_input = dialogflow.types.TextInput(
+        text=client_msg, language_code=language_code)
+    print(f"the TEXT INPUT {text_input}")
+    query_input = dialogflow.types.QueryInput(text=text_input)
 
         # Set the query parameters with sentiment analysis
         output_audio_config = dialogflow.types.OutputAudioConfig(

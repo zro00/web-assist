@@ -81,6 +81,9 @@ if ("WebSocket" in window) {
     }
     ws.onmessage = function (evt) { 
       let received_msg = evt.data;
+      console.log(evt.data);
+      let audio = new Audio(evt.data);
+
       text_to_speech(received_msg, speechSynthesis, SpeechSynthesisUtterance);
     };
     

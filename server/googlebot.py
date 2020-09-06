@@ -1,6 +1,7 @@
 #from starlette.websockets import WebSocket
 #from starlette.applications import Starlette
 import os
+import io
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import HTMLResponse
 
@@ -63,10 +64,11 @@ def detect_intent_with_texttospeech_response(project_id, session_id, texts,
             response.query_result.intent_detection_confidence))
         print('Fulfillment text: {}\n'.format(
             response.query_result.fulfillment_text))
+        return response.output_audio
         # The response's audio_content is binary.
-        with open('output.wav', 'wb') as out:
-            out.write(response.output_audio)
-            print('Audio content written to file "output.wav"')
+        #with open('output.wav', 'wb') as out:
+            #out.write(response.output_audio)
+            #print('Audio content written to file "output.wav"')
 
 
 @app.websocket_route('/voice')
@@ -77,8 +79,9 @@ async def websocket_endpoint(websocket: WebSocket):
     while True:
         mesg = await websocket.receive_text()
         print(f"THE MESSAGE WAS {mesg}")
-        audio = detect_intent_with_texttospeech_response(project_id,session_id, mesg, language_code)
-        await websocket.send_text(mesg.replace("Client", "Server"))
+        audio_output = detect_intent_with_texttospeech_response(project_id,session_id, mesg, language_code)
+        await websocket.send_bytes(audio_output)
+        #await websocket.send_text(mesg.replace("Client", "Server"))
     await websocket.close()
 
 

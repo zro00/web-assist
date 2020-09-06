@@ -1,0 +1,6 @@
+#starlette
+fastapi
+uvicorn
+#requests
+#ujson
+dialogflow

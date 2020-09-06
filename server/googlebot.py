@@ -34,6 +34,7 @@ def detect_intent_with_texttospeech_response(project_id, session_id, texts,
     """Returns the result of detect intent with texts as inputs and includes
     the response in an audio format.
 
+
     Using the same `session_id` between requests allows continuation
     of the conversation."""
     import dialogflow_v2 as dialogflow
@@ -45,7 +46,7 @@ def detect_intent_with_texttospeech_response(project_id, session_id, texts,
     for text in texts:
         text_input = dialogflow.types.TextInput(
             text=text, language_code=language_code)
-
+        print(f"the TEXT INPUT {text_input}")
         query_input = dialogflow.types.QueryInput(text=text_input)
 
         # Set the query parameters with sentiment analysis

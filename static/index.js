@@ -80,11 +80,14 @@ if ("WebSocket" in window) {
   });  
     }
     ws.onmessage = function (evt) { 
-      let received_msg = evt.data;
+      let received_audio = evt.data;
       console.log(evt.data);
-      let audio = new Audio(evt.data);
+      let audio_blob = new Blob([received_audio], {type : 'audio/wav'});
+      let blobUrl = URL.createObjectURL(audio_blob);
+      let audio_play = new Audio(blobUrl);
+      audio_play.play();
 
-      text_to_speech(received_msg, speechSynthesis, SpeechSynthesisUtterance);
+      //text_to_speech(received_msg, speechSynthesis, SpeechSynthesisUtterance);
     };
     
     ws.onclose = function() { 
